@@ -71,3 +71,33 @@ Agenda Today
 10. Using AI effectively
 11. (stretch goal) conditions
 12. Review and Q&A
+
+
+
+
+What did you learn today?
+
+1. I know nothing
+2. Scanner - input
+   1. import java.util.Scanner;
+   2. Scanner <- is the data type
+   3. nextInt()
+   4. nextFloat()
+   5. nextDouble()
+   6. nextBoolean()
+   7. nextLine()
+3. nextInt and other types (not nextLine) requires you to consume a CRLF
+   1. using .nextLine()
+4. CRLF - Carriage Return Line Feed
+5. printf
+   1. format specifiers %
+      1. %s - String
+      2. %f - floats
+      3. %d - ints
+6. print
+7. println
+8. \n new line character
+9. \t adds tab/indentation
+10. Math.random()
+11. Math.hypot()
+
