@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class MortgageCalculator {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
+        
 
         System.out.println("--Welcome to the Mortgage Calculator!--\n");
         System.out.println("--Let's figure out your monthly payment and interest!--\n");
