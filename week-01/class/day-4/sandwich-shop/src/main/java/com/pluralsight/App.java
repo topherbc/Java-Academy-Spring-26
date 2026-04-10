@@ -9,6 +9,7 @@ public class App {
         double regular = 5.45;
         double large = 8.95;
         double grandTotal = 0;
+        double youngDiscount = 0.9;
 
         System.out.print("Please enter the size of the sandwich (1 for regular and 2 for large): ");
         String size = keyboard.nextLine();
@@ -25,7 +26,7 @@ public class App {
         }
 
         if (age <= 17) {
-            grandTotal*=0.9;
+            grandTotal*=youngDiscount;
         } else if (age >= 65) {
             grandTotal*=0.8;
         }
