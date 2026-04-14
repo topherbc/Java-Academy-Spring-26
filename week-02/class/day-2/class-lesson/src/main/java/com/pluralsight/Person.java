@@ -3,10 +3,16 @@ package com.pluralsight;
 public class Person {
     private String name;
     private int age;
+    private String hobby;
 
-    public Person(String name, int age) {
+    public Person(String name, int age, String hobby) {
         this.name = name;
         this.age = age;
+        this.hobby = hobby;
+    }
+
+    public String getHobby() {
+        return this.name + " Loves to do: " + hobby;
     }
 
     public String getName() {

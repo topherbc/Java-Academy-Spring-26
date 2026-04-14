@@ -44,3 +44,23 @@ Agenda Today
 8. Break
 9. Stretch goals
 10. Recap and Q&A
+
+
+What did you learn today?
+
+1. Splitting Strings
+2. Parsing Strings
+   1. Integer.parseInt()
+   2. Double.parseDouble()
+   3. Boolean.parseBoolean()
+   4. parseString
+3. Date Stuff
+   1. DateTimeFormatter
+   2. LocalDate
+   3. YYYY-MM-DD <- Standard format for dates in code
+   4. Date stuff is import
+4. StringBuilder - building strings
+   1. .append() <- adding onto string
+5. classes
+6. Hover over red, get info on problem
+
