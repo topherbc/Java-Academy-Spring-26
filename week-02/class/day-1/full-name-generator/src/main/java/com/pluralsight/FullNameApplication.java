@@ -16,6 +16,7 @@ public class FullNameApplication {
         System.out.print("Last Name: ");
         String lastName = keyboard.nextLine().trim();
 
+
         System.out.print("Suffix: ");
         String suffix = keyboard.nextLine().trim();
 
