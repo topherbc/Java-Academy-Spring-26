@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String name =  scanner.nextLine();
+//        String name =  scanner.nextLine();
 
         //To Classify
 
@@ -17,10 +17,10 @@ public class App {
         //instantiate == new
         //new instance
 
-        //Default Access Modifiers = public v private
+        //Access Modifiers = public v private
         //levels of encapsulation
 
-        Person taryn = new Person(name, 67, "drawing");
+        Person taryn = new Person("taryn", 67, "drawing");
 
         Person polina = new Person("Polina", 12, "reading books");
 
@@ -29,10 +29,27 @@ public class App {
         Person cameron = new Person("Cameron", 10, "beyblader");
 
         //dot notation
-        System.out.println(taryn.getName());
+//        System.out.println(taryn.getName());
 
-        System.out.println(polina.getHobby());
+//        System.out.println(polina.getHobby("hello"));
+//        System.out.println(polina.getHobby(10));
 
+//        System.out.println("WHY ");
 
+        add(5, 5); //invokes add with int params
+        add(5.5, 5.5); //invoke add with double params
     }
+
+    public static void add(int x, int y) {
+        System.out.println(x + y);
+    }
+
+    public static void add(double x, double y) {
+        System.out.println(x + y);
+    }
+
+    public static void add(String x, String y) {
+        System.out.println(x + y);
+    }
+
 }

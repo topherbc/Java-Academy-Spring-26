@@ -30,3 +30,24 @@ Agenda Today
 8. CellPhone Exercise
 9. We do exercise
 10. Recap and Q&A
+
+
+What did you learn today?
+
+1. OOP - Object Oriented Programming
+   1. class - blueprints for creating objects
+   2. access modifiers/specifiers
+      1. public - everyone can read
+      2. private - only object can read
+   3. constructor method - construct the object / providing initialization
+   4. dot notation
+      1. Using . to access properties and methods
+   5. encapsulation
+   6. getters - gets data
+   7. setter - set data
+   8. new - instantiates an object based off of a class
+   9. instances
+      1. this - refers to the current instances of the class
+2. Overloading methods
+3. arguments and parameters
+4. Right click generate class methods
