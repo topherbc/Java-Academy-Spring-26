@@ -43,7 +43,7 @@ Today's Agenda
 What did you learn today?
 
 1. for loops -  iterating a set number of times
-   1. initalized value; condition; increment/decrement
+   1. initialized value; condition; increment/decrement
 2. while - runs while condition is true
 3. do while - runs at least 1 time, will continue while condition is true
 4. Math.random() <- returns a random number between 0 and 1
