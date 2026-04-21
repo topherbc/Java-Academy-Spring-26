@@ -18,3 +18,19 @@ Agenda Today
 9. BufferedWriter demo
 10. BufferedWriter exercise
 11. Recap and Q&A
+
+What you learned today?
+
+1. IO - Inputs and Outputs
+2. BufferedReader - More efficient
+3. FileReader
+4. BufferedWriter
+   1. append - adds to end of file
+5. FileWriter
+6. Exceptions
+   1. throw Exceptions, to let other methods handle (catch) the exception
+7. try/catch
+8. Relative Pathing
+9.  Absolute Pathing
+10. Thread.sleep(ms)
+11. ArrayList
