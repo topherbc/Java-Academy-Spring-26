@@ -30,3 +30,20 @@ Agenda Today
 9. you/we build arraylist app
 10. Recap and Q&A
 
+What did you learn today?
+
+1. ArrayList<DataType> - fixed on one type of data
+   1. .size()
+   2. .endsWith()
+   3. .add()
+   4. .get()
+   5. .remove()
+   6. .contains()
+2. using dot notation to view available methods/fields
+3. csv - comma separated values
+4. Becoming more familiar with placeholder syntax
+5. <> angle brackets
+6. stack trace
+   1. traces the series of events that cause an error to occur
+7. Methods should only do 1 thing
+
