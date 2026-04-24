@@ -36,3 +36,24 @@ Agenda Today
 5. HashMap Exercise
 6. Trace Group Exercise
 7. Recap and Q&A
+
+
+What did you learn today?
+
+1. HashMaps
+   1. keys
+      1. keys must be unique
+   2. values
+   3. .put()
+      1. inserts new record, or updates if updating with existing key
+   4. .remove()
+   5. .clear()
+   6. .getOrDefault()
+   7. .keySet() - return list of keys
+   8. .values() - returns list of values
+   9. .get(key) gets value
+2. For each loop
+   1. for(DataType variable : list) {}
+3. JSON - javascript object notation
+
+

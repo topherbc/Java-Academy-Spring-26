@@ -122,4 +122,5 @@ public class Lesson {
         farmAnimals.clear();
         System.out.println("\nAfter clear(), isEmpty: " + farmAnimals.isEmpty());
     }
+    
 }
