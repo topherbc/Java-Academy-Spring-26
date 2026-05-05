@@ -2,10 +2,12 @@ package com.pluralsight;
 
 public class Main {
     public static void main(String[] args) {
-        Room room1 = new Room(2, 159.00, true, true);
+        Room room101 = new Room(2, 159.00, false, false);
+        Room room201 = new Room(2, 159.00, false, false);
 
-        System.out.println(!false);
-//        System.out.println(room1.isAvailable());
+       if (room101.isAvailable()) {
+           room101.checkIn();
+       }
 
     }
 }
