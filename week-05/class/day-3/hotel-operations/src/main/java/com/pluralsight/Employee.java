@@ -13,6 +13,11 @@ public class Employee {
         this.department = department;
         this.payRate = payRate;
         this.hoursWorked = hoursWorked;
+        this.startTime = -1;
+    }
+
+    public int getStartTime() {
+        return startTime;
     }
 
     public double getTotalPay() {
@@ -52,7 +57,7 @@ public class Employee {
     }
 
     public void punchTimeCard(int time) {
-       if (this.startTime != -1) {
+       if (this.startTime == -1) {
            this.startTime = time;
        } else {
            this.hoursWorked += time-startTime;
@@ -62,7 +67,7 @@ public class Employee {
 
     public void punchTimeCard() {
         int time = LocalTime.now().getHour();
-        if (this.startTime != -1) {
+        if (this.startTime == -1) {
             this.startTime = time;
         } else {
             this.hoursWorked += time-startTime;
