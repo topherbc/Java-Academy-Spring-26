@@ -15,6 +15,10 @@ public class Hand {
         cards.add(card);
     }
 
+    public void clear() {
+        cards.clear();
+    }
+
     public int getSize() {
         return cards.size();
     }

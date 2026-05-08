@@ -13,8 +13,8 @@ public class Main {
         //final == constant, something unchanging
         //immutable == not mutatable == non modifiable
 
-//        StringUtilsMaker sum = new StringUtilsMaker();
-//        sum.greet("Felicia"); //using non-static (instance) object and method
+        StringUtilsMaker sum = new StringUtilsMaker();
+        sum.greet("Felicia"); //using non-static (instance) object and method
 
         Math.round(Math.PI); //Using static method and static property
 
