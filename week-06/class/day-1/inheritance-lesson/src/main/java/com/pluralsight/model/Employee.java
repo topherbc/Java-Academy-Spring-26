@@ -4,7 +4,12 @@ public class Employee {
     protected String name;
     protected int id;
     protected double salary;
-    protected String ssn;
+
+    public Employee(String name, int id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
 
     public void work() {
         System.out.println("Employee " + this.name + " is working");

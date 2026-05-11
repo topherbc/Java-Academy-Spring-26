@@ -3,14 +3,17 @@ package com.pluralsight.model;
 public class Manager extends Employee {
     private int teamSize;
 
-    @Override
-    public void work() {
-        System.out.println("Manager " + this.id + " is managing a team of " + this.teamSize + " employees");
+    public Manager(String name, int id, double salary, int teamSize) {
+        super(name, id, salary);
+        this.teamSize = teamSize;
     }
 
-    public void seePrivateData() {
-        System.out.println(this.ssn);
+    @Override
+    public void work() {
+        super.work();
+        System.out.println("Manager " + this.name + " is managing a team of " + this.teamSize + " employees");
     }
+
 
     public void doManagement() {
         System.out.println(this.name + " is managing");
