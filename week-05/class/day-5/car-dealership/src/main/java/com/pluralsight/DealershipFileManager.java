@@ -35,7 +35,6 @@ public class DealershipFileManager {
             e.printStackTrace();
         }
 
-
         return dealership;
     }
 
