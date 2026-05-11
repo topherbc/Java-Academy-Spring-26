@@ -54,3 +54,14 @@ Agenda Today
 8. break
 9. super lesson
 10. Recap and Q&A
+
+What did you learn today?
+
+1. inheritance
+   1. we inherit from super classes, attributes and properties
+   2. extends
+      1. extends SuperClassName
+   3. super - refers to super/parent class
+   4. protected access modifiers
+      1. private within the lineage
+2. @Override annotation
