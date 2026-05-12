@@ -12,6 +12,5 @@ public class Main {
 
         Developer d1 = new Developer("Jihad", 3, 300000, "Java");
         d1.work();
-
     }
 }
