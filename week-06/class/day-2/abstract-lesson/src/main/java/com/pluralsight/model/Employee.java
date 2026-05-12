@@ -1,6 +1,6 @@
 package com.pluralsight.model;
 
-public class Employee {
+public abstract class Employee {
     protected String name;
     protected int id;
     protected double salary;
@@ -11,9 +11,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public void work() {
-        System.out.println("Employee " + this.name + " is working");
-    }
+    public abstract void work();
 
     public String getName() {
         return name;
