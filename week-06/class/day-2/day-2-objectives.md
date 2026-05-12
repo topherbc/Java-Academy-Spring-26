@@ -35,3 +35,12 @@ Agenda Today
 8. Break
 9. Abstract
 10. Recap and Q&A
+
+What did you learn today?
+
+1. polymorphism - having many types adhere to the same type
+2. instanceof
+3. @Override
+4. abstract
+   1. abstraction can't be instantiated
+5. @Annotation
