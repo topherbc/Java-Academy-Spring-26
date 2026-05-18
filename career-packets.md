@@ -117,6 +117,21 @@ DBAs manage database systems, ensure performance and availability, handle backup
 
 ---
 
+## Data Analyst
+
+**Getting started:**
+* SQL is the most important skill to learn first — nearly every analyst role requires it
+* https://mode.com/sql-tutorial — free, practical SQL tutorial used widely
+* Python or R are the two main languages for deeper analysis — Python is the more versatile choice
+* https://www.kaggle.com — free datasets, courses, and competitions great for building real experience
+
+**Tools worth knowing:**
+* Excel and Google Sheets — still used everywhere, worth being strong in both
+* Tableau for data visualization: https://www.tableau.com/learn/training
+* https://app.pluralsight.com/paths/skill/data-analysis-fundamentals — foundational path
+
+---
+
 ## DevOps
 
 DevOps bridges development and operations teams, automates infrastructure, implements CI/CD pipelines, and improves software delivery speed and reliability. DevOps is about culture and practices, not just tools.
@@ -294,6 +309,21 @@ Orchestrate and manage containerized applications at scale, handling deployment,
 * https://deepmind.google/discover/blog/
 * https://www.deeplearning.ai/the-batch/
 * https://www.technologyreview.com/topic/artificial-intelligence/
+
+---
+
+## Marketing
+
+**Getting started:**
+* Pick a focus area to start — content, social media, paid ads, or email are the most common entry points
+* Google offers free certifications worth having early: https://skillshop.google.com
+* https://moz.com/beginners-guide-to-seo — SEO is foundational to most marketing roles
+* HubSpot Academy has free courses on inbound marketing, email, and content: https://academy.hubspot.com
+
+**Tools worth knowing:**
+* Google Analytics for understanding traffic and audience behavior: https://analytics.google.com
+* Canva for quick content creation: https://www.canva.com
+* Mailchimp for email marketing basics: https://mailchimp.com
 
 ---
 
