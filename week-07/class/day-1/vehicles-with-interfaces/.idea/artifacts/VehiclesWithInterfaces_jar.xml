@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="VehiclesWithInterfaces:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VehiclesWithInterfaces_jar</output-path>
+    <root id="archive" name="VehiclesWithInterfaces.jar">
+      <element id="module-output" name="vehicles-with-interfaces" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,56 @@
+Car|5|500|60|Red|Jeep|Cherokee|4
+Car|4|450|55|Green|Ford|Shelby|4
+Car|2|300|45|Black|Nissan|GT-R|2
+Car|7|600|70|White|Chevrolet|Camaro|4
+Car|3|400|50|Green|Subaru|Outback|2
+Moped|2|40|10|Blue|35|true
+Moped|1|30|12|Pink|28|false
+Moped|2|50|15|Orange|40|true
+Moped|2|35|8|Yellow|30|true
+Moped|1|45|14|Purple|38|false
+SemiTruck|2|25000|500|Blue|Peterbilt|389|5|true
+SemiTruck|3|30000|600|Red|Kenworth|T680|6|true
+SemiTruck|2|20000|450|Green|Freightliner|Cascadia|5|false
+SemiTruck|2|35000|700|Silver|Volvo|VNL|6|true
+SemiTruck|3|28000|550|Black|Mack|Anthem|5|true
+Hovercraft|12|1500|250|Silver|500|true
+Hovercraft|8|800|180|Gold|350|true
+Hovercraft|15|2000|300|Purple|650|true
+Hovercraft|10|1200|220|Bronze|450|false
+Hovercraft|20|2500|400|Platinum|800|true
+Car|2|200|45|Red|Ferrari|F8 Tributo|2
+Car|2|150|50|Yellow|Lamborghini|Aventador|2
+Car|2|180|48|Black|Porsche|911 GT3|2
+Car|4|350|55|Blue|Tesla|Model S Plaid|4
+Car|2|250|52|Orange|McLaren|720S|2
+Car|4|400|60|Silver|Audi|R8|2
+Car|2|175|45|White|Corvette|Z06|2
+Car|4|300|58|Green|BMW|M5|4
+Car|2|220|50|Purple|Dodge|Viper|2
+Car|2|190|47|Cyan|Nissan|GT-R|2
+Car|4|320|55|Gray|Mercedes|AMG GT|4
+Car|2|160|43|Maroon|Aston Martin|Vantage|2
+Moped|2|40|10|Neon Green|45|true
+Moped|1|30|12|Hot Pink|38|true
+Moped|2|50|15|Electric Blue|42|true
+Moped|1|35|8|Lime|30|false
+Moped|2|45|14|Magenta|40|true
+Moped|1|38|11|Turquoise|35|true
+Moped|2|42|13|Chrome|43|false
+Moped|1|33|9|Rainbow|32|true
+SemiTruck|3|40000|800|Crimson|Optimus Prime|Custom|8|true
+SemiTruck|2|35000|750|Midnight Black|Phantom|Hauler|6|true
+SemiTruck|3|38000|700|Chrome|Western Star|4900|7|true
+SemiTruck|2|32000|650|Gunmetal|International|LT|6|true
+SemiTruck|3|42000|850|Navy|Scania|R-Series|8|true
+Hovercraft|20|3000|500|Holographic|1000|true
+Hovercraft|15|2200|350|Chrome|750|true
+Hovercraft|25|3500|600|Iridescent|1200|true
+Hovercraft|18|2800|450|Stealth Black|900|true
+Hovercraft|30|4000|700|Pearl White|1500|true
+Hovercraft|12|1800|300|Carbon Fiber|650|true
+Hovercraft|22|3200|550|Electric Purple|1100|true
+Hovercraft|16|2400|400|Copper|800|true
+Car|40|1000|20|yellow|Volkswagen|Beetle|4
+SemiTruck|2|12000|30|red|Mack|Truck|1|false
+Car|4|1000|15|Red|Dodge|Charger|4
