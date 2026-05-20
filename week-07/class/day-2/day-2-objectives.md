@@ -19,8 +19,10 @@ Agenda Today
 5. Break
 6. Generics You do exercise
 7. Lunch
-8. Continue exericse?
+8. Continue exercise?
 9. We build custom collections
 10. Break
 11. Continued....
 12. Recap and Q&A
+
+

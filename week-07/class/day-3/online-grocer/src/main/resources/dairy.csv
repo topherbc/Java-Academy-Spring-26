@@ -1,0 +1,25 @@
+id,name,price,category,stockQuantity,fatContent,organic
+DP118,Whole Milk,3.99,Milk,45,3.5,false
+DP002,Skim Milk,3.49,Milk,32,0.1,false
+DP003,Organic Whole Milk,5.99,Milk,24,3.7,true
+DP032,American Cheese,200.80,Cheese,2,20,true
+DP004,Almond Milk,4.49,Non-Dairy Alternative,38,2.5,true
+DP021,Circassian Cheese,6.49,Cheese,18,25.0,true
+DP005,Cheddar Cheese,4.79,Cheese,56,33.0,false
+DP006,Organic Mozzarella,6.29,Cheese,18,22.0,true
+DP030,Koppen Cheese,6.89,Cheese,17,28.0,false
+DP0080,Greek Yogurt,2.99,Yogurt,67,5.0,false
+DP008,Organic Greek Yogurt,4.59,Yogurt,29,5.0,true
+DP009,Butter,3.89,Butter,42,80.0,false
+DP010,Organic Butter,5.99,Butter,19,81.0,true
+DP011,Heavy Cream,4.29,Cream,23,36.0,false
+DP112,Sour Cream,2.79,Cream,31,20.0,false
+DP013,Cottage Cheese,3.49,Cheese,36,4.0,false
+DP014,Organic Cottage Cheese,4.99,Cheese,15,4.0,true
+DP025,Tulum Cheese,8.49,Cheese,20,27.0,true
+DP015,Oat Milk,4.29,Non-Dairy Alternative,28,2.0,true
+DP016,Soy Milk,3.79,Non-Dairy Alternative,33,2.3,true
+DP017,Half and Half,2.99,Cream,41,12.0,false
+DP001,Organic Half and Half,4.49,Cream,19,12.0,true
+DP002,Swiss Cheese,5.29,Cheese,26,29.0,false
+DP020,Feta Cheese,4.99,Cheese,22,21.0,false
