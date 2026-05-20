@@ -13,7 +13,8 @@ public class SearchUtilities {
      * @return A new ArrayList containing only the products from the specified category
      */
     public static List<DairyProduct> getByProductCategory(String category, ArrayList<DairyProduct> products) {
-        return  products.stream().filter(p -> p.getCategory().equalsIgnoreCase(category))
+        return products.stream()
+                .filter(p -> p.getCategory().equalsIgnoreCase(category))
                 .toList();
 
         
@@ -37,8 +38,6 @@ public class SearchUtilities {
      * @return The total monetary value of all products in the inventory from the specified category
      */
     public static double getByCategoryTotalProductValue(String category, ArrayList<DairyProduct> products) {
-
-
         return products.stream()
                 .filter((dairyProduct -> {
                     return dairyProduct.getCategory().equals(category);

@@ -31,3 +31,24 @@ Agenda Today
 11. We/You do streams
 12. Recap and Q&A
 
+What did you learn today?
+
+1. data transformation
+2. streams - more efficient than traditional loops
+   1. streams().collect()
+   2. .map() - takes one value and changes to another
+   3. .filter() -> returns results based on true boolean match
+   4. .sorted()
+   5. .reduce()
+   6. .count()
+   7. .sum()
+   8. .average()
+   9. .max()
+   10. .min()
+   11. .toList()
+   12. .optionalDouble
+3. lambda expressions ->
+   1. -> shorthand for method definition
+   2. (parameter) -> {function body and return }
+4. Collectors
+
