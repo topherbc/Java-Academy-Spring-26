@@ -46,7 +46,8 @@ What did you learn today?
    9. .max()
    10. .min()
    11. .toList()
-   12. .optionalDouble
+   12. .forEach()
+   13. .optionalDouble
 3. lambda expressions ->
    1. -> shorthand for method definition
    2. (parameter) -> {function body and return }
