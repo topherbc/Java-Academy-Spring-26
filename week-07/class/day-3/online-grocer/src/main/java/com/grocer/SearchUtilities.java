@@ -13,20 +13,19 @@ public class SearchUtilities {
      * @return A new ArrayList containing only the products from the specified category
      */
     public static List<DairyProduct> getByProductCategory(String category, ArrayList<DairyProduct> products) {
-//        return  products.stream()
-//                .filter(p -> p.getCategory().equalsIgnoreCase(category))
-//                .toList();
+        return  products.stream().filter(p -> p.getCategory().equalsIgnoreCase(category))
+                .toList();
 
         
-        ArrayList<DairyProduct> matches = new ArrayList<>();
-
-        for (DairyProduct dairyProduct : products) {
-            if (category.equalsIgnoreCase(dairyProduct.getCategory())) {
-                matches.add(dairyProduct);
-            }
-        }
-
-        return matches;
+//        ArrayList<DairyProduct> matches = new ArrayList<>();
+//
+//        for (DairyProduct dairyProduct : products) {
+//            if (category.equalsIgnoreCase(dairyProduct.getCategory())) {
+//                matches.add(dairyProduct);
+//            }
+//        }
+//
+//        return matches;
     }
 
     /**
@@ -38,26 +37,25 @@ public class SearchUtilities {
      * @return The total monetary value of all products in the inventory from the specified category
      */
     public static double getByCategoryTotalProductValue(String category, ArrayList<DairyProduct> products) {
-//        return products.stream()
-//                .filter((dairyProduct -> {
-//                    //netflix algorithm
+
+
+        return products.stream()
+                .filter((dairyProduct -> {
+                    return dairyProduct.getCategory().equals(category);
+                }))
+                .mapToDouble((dairyProduct) -> dairyProduct.getPrice() * dairyProduct.getStockQuantity())
+                .sum();
+
+
+//        double sum = 0;
 //
-//                    //might live here
-//                    return dairyProduct.getCategory().equals(category);
-//                }))
-//                .mapToDouble((dairyProduct) -> dairyProduct.getPrice() * dairyProduct.getStockQuantity())
-//                .sum();
-
-
-        double sum = 0;
-
-        for (DairyProduct dairyProduct : products) {
-            if (category.equals(dairyProduct.getCategory())) {
-                sum += dairyProduct.getPrice() * dairyProduct.getStockQuantity();
-            }
-        }
-
-        return sum;
+//        for (DairyProduct dairyProduct : products) {
+//            if (category.equals(dairyProduct.getCategory())) {
+//                sum += dairyProduct.getPrice() * dairyProduct.getStockQuantity();
+//            }
+//        }
+//
+//        return sum;
     }
 
     /**
@@ -90,10 +88,10 @@ public class SearchUtilities {
      * @return The total count of products in the list
      */
     public static int getTotalProductCount(ArrayList<?> products) {
-//        return (int) products.stream().count();
+        return (int) products.stream().count();
 
 
-        return products.size();
+//        return products.size();
     }
 
     /**
