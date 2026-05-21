@@ -3,8 +3,10 @@ package com.pluralsight.streams;
 import com.pluralsight.Person;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Program {
 
@@ -42,21 +44,14 @@ public class Program {
 
     public static void printAll() {
         System.out.println("--- All Astronomers ---");
-        astronomers.forEach(p -> System.out.println(p.getFirstName() + " " + p.getLastname() + ", Age: " + p.getAge()));
-
-        for (Person p : astronomers) {
-            System.out.println(p.getFirstName() + " " + p.getLastname() + ", Age: " + p.getAge());
-        }
+        astronomers.forEach(System.out::println);
+//        astronomers.forEach(p -> System.out.println(p.getFirstName() + " " + p.getLastname() + ", Age: " + p.getAge()));
     }
 
     public static List<Person> searchByName(String searchName) {
-        List<Person> matches = new ArrayList<>();
-        for (Person p : astronomers) {
-            if (p.getFirstName().equalsIgnoreCase(searchName) || p.getLastname().equalsIgnoreCase(searchName)) {
-                matches.add(p);
-            }
-        }
-        return matches;
+        return astronomers.stream()
+                .filter(p -> p.getFirstName().equalsIgnoreCase(searchName) || p.getLastname().equalsIgnoreCase(searchName))
+                .collect(Collectors.toList());
     }
 
     public static void printMatches(List<Person> matches, String searchName) {
@@ -71,33 +66,26 @@ public class Program {
     }
 
     public static void printAverageAge() {
-        int totalAge = 0;
-        for (Person p : astronomers) {
-            totalAge += p.getAge();
-        }
-        double averageAge = (double) totalAge / astronomers.size();
+        double averageAge = astronomers.stream()
+                .mapToDouble(p -> p.getAge())
+                .average().getAsDouble();
+
         System.out.println("\n--- Age Statistics ---");
         System.out.printf("Average age: %.1f%n", averageAge);
     }
 
     public static void printOldest() {
-        Person oldest = astronomers.get(0);
-        for (Person p : astronomers) {
-            if (p.getAge() > oldest.getAge()) {
-                oldest = p;
-            }
-        }
+        Person oldest = astronomers.stream()
+                .max(Comparator.comparing(a -> a.getAge()))
+                .get();
         System.out.println("Oldest: " + oldest.getFirstName() + " " + oldest.getLastname()
                 + " (Age: " + oldest.getAge() + ")");
     }
 
     public static void printYoungest() {
-        Person youngest = astronomers.get(0);
-        for (Person p : astronomers) {
-            if (p.getAge() < youngest.getAge()) {
-                youngest = p;
-            }
-        }
+        Person youngest = astronomers.stream()
+                .min(Comparator.comparing(a -> a.getAge()))
+                .get();
         System.out.println("Youngest: " + youngest.getFirstName() + " " + youngest.getLastname()
                 + " (Age: " + youngest.getAge() + ")");
     }

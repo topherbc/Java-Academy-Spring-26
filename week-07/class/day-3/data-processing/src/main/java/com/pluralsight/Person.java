@@ -4,6 +4,11 @@ public class Person {
     private String firstName, lastname;
     private int age;
 
+    @Override
+    public String toString() {
+        return this.firstName + " " + this.lastname + ", Age: " + this.age;
+    }
+
     public Person(String firstName, String lastname, int age) {
         this.firstName = firstName;
         this.lastname = lastname;

@@ -101,17 +101,17 @@ public class SearchUtilities {
      * @return The count of organic products in the list
      */
     public static int getTotalOrganicProductCount(ArrayList<DairyProduct> products) {
-//        return (int) products.stream().filter(DairyProduct::isOrganic).count();
+        return (int) products.stream().filter(DairyProduct::isOrganic).count();
 
 
-        int count = 0;
-
-        for (DairyProduct dairyProduct : products) {
-            if (dairyProduct.isOrganic()) {
-                count++;
-            }
-        }
-
-        return count;
+//        int count = 0;
+//
+//        for (DairyProduct dairyProduct : products) {
+//            if (dairyProduct.isOrganic()) {
+//                count++;
+//            }
+//        }
+//
+//        return count;
     }
 }
