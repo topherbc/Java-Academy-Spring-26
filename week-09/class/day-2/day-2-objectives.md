@@ -195,3 +195,23 @@ Agenda Today
 11. Break
 12. A quick trip to the zoo
 13. Recap and Q&A
+
+
+What did you learn today?
+
+1. USE DB
+2. Aggregate Functions
+   1. COUNT()
+   2. ROUND()
+   3. CONCAT()
+   4. MIN()
+   5. MAX()
+   6. AVG()
+   7. SUM()
+3. _ - one character wildcard
+4. AS - alias
+5. GROUP BY
+6. HAVING - condition for aggregates
+7. LIMIT
+8. TINYINT
+9. Boolean
