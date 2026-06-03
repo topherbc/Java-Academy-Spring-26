@@ -38,3 +38,22 @@ Agenda Today
 7. Lunch
 8. JOIN's
 9. Recap and Q&A
+
+
+What did you learn today?
+
+1. JOIN - establish connection between two tables for query
+   1. connect tables by Primary Key and Foreign key relationships
+   2. ON
+   3. LEFT JOIN
+   4. INNER JOIN or JOIN
+   5. RIGHT JOIN
+2. PrimaryKey or PK - id on primary table
+   1. Orders, an OrderID is the PrimaryKey
+3. Foreign Key or FK - Primary Key, on a different table
+   1. ON Orders, ProductID is a forign key of Products table, on Order table
+4. Nested Queries or subqueries
+   1. query in query
+   2. write subqueries first
+   3. Required to return 1 value, or 1 list of values
+5. Miranda hires murderers
