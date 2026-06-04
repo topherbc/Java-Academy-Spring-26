@@ -1,7 +1,7 @@
 Icebreaker: Write a query to obtain your favorite song, album, or artist
 
 
-EX: 
+Examples: 
 SELECT
   artist,
   album,

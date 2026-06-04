@@ -40,8 +40,8 @@ SELECT
     o.ShipAddress
 FROM
 	Orders AS o
-    JOIN `Order Details` AS od ON (o.OrderID = od.OrderID)
-    JOIN Products AS p ON (od.ProductID = p.ProductID)
+    INNER JOIN `Order Details` AS od ON (o.OrderID = od.OrderID)
+    INNER JOIN Products AS p ON (od.ProductID = p.ProductID)
 WHERE p.ProductName = "Sasquatch Ale";
 
 
