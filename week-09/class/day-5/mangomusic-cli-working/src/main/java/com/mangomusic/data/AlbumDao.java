@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,23 +58,26 @@ public class AlbumDao {
         String query = "SELECT al.album_id, al.artist_id, al.title, al.release_year, ar.name as artist_name " +
                 "FROM albums al " +
                 "JOIN artists ar ON al.artist_id = ar.artist_id " +
-                "WHERE ar.primary_genre = '" + genre + "' " +
+                "WHERE ar.primary_genre = ? " +
                 "ORDER BY al.title";
 
         try {
             Connection connection = dataManager.getConnection();
 
-            try (Statement statement = connection.createStatement();
-                 ResultSet results = statement.executeQuery(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
 
-                while (results.next()) {
-                    int albumId = results.getInt("album_id");
-                    int artistId = results.getInt("artist_id");
-                    String title = results.getString("title");
-                    int releaseYear = results.getInt("release_year");
-                    String artistName = results.getString("artist_name");
+                statement.setString(1, genre);
 
-                    albums.add(new Album(albumId, artistId, title, releaseYear, artistName));
+                try (ResultSet results = statement.executeQuery()) {
+                    while (results.next()) {
+                        int albumId = results.getInt("album_id");
+                        int artistId = results.getInt("artist_id");
+                        String title = results.getString("title");
+                        int releaseYear = results.getInt("release_year");
+                        String artistName = results.getString("artist_name");
+
+                        albums.add(new Album(albumId, artistId, title, releaseYear, artistName));
+                    }
                 }
             }
 
@@ -105,8 +107,7 @@ public class AlbumDao {
                 try (ResultSet results = statement.executeQuery()) {
                     while (results.next()) {
                         int albumId = results.getInt("album_id");
-                        String artistIdStr = results.getString("artist_id");
-                        int artistId = Integer.parseInt(artistIdStr);
+                        int artistId = results.getInt("artist_id");
                         String title = results.getString("title");
                         int releaseYear = results.getInt("release_year");
                         String artistName = results.getString("artist_name");

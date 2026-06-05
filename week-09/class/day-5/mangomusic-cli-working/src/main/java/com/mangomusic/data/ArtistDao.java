@@ -26,11 +26,10 @@ public class ArtistDao {
 
         try {
             Connection connection = dataManager.getConnection();
-            //try-with-resources -- auto closes resources after try is done
 
             try (PreparedStatement statement = connection.prepareStatement(query)) {
 
-                statement.setString(1, "%" + searchTerm + "%"); //this sanitizes
+                statement.setString(1, "%" + searchTerm + "%");
 
                 try (ResultSet results = statement.executeQuery()) {
                     while (results.next()) {
