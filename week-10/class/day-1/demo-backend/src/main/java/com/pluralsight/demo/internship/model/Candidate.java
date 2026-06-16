@@ -1,6 +1,10 @@
 package com.pluralsight.demo.internship.model;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "candidates")
@@ -16,6 +20,10 @@ public class Candidate {
     
     private String fieldOfStudy;
 
+    private LocalDateTime registeredAt;
+
+    private boolean visible;
+
     // Constructors
     public Candidate() {
     }
@@ -24,6 +32,22 @@ public class Candidate {
         this.name = name;
         this.email = email;
         this.fieldOfStudy = fieldOfStudy;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public LocalDateTime getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(LocalDateTime registeredAt) {
+        this.registeredAt = registeredAt;
     }
 
     // Getters and Setters

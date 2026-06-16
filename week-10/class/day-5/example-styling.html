@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MangoBookings</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%231e0e18'/><text y='66' x='50' text-anchor='middle' font-size='52' font-family='serif' fill='%23fde8c0'>&#x1F39F;</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MangoBookings -- Box Office
+   Refined Mango palette (cream / orange / purple) reskinned with
+   old-school ticket materials: serrated ADMIT ONE stubs, serials,
+   barcodes, gate dispensers, and a rubber-stamp reveal.
+============================================================ */
+:root {
+  --bg:           #faf6f1;
+  --bg2:          #f2ebe0;
+  --bg3:          #e8ddd0;
+  --surface:      #ddd0be;
+  --surface2:     #cfc0a8;
+  --border:       rgba(110,60,20,0.13);
+  --border-md:    rgba(110,60,20,0.24);
+
+  --purple-deep:  #1a0d2e;
+  --purple-mid:   #3d1f5e;
+  --purple:       #6b3fa0;
+  --purple-lt:    #9b6fa8;
+  --purple-pale:  rgba(107,63,160,0.10);
+
+  --orange:       #c05a3a;
+  --orange-dk:    #a04830;
+  --orange-lt:    #d4734e;
+  --orange-grad-a:#d4734e;
+  --orange-grad-b:#c2621a;
+  --orange-pale:  rgba(192,90,58,0.10);
+
+  --cream:        #faf6f1;
+  --cream-dk:     #f0e8da;
+
+  --text:         #1e1209;
+  --text-2:       #3d2510;
+  --muted:        #8a6040;
+  --muted-lt:     #8c5830;
+
+  /* Box-office tones */
+  --sign-bg:      #1e0e18;
+  --sign-bg2:     #2a1420;
+  --bulb-on:      #ffd98a;
+  --bulb-glow:    rgba(255,217,138,0.85);
+  --board-on:     #fde8c0;
+  --board-muted:  rgba(253,232,192,0.34);
+
+  /* Ticket paper */
+  --ticket-paper: #fbf3e4;
+  --ticket-paper2:#f5ead3;
+  --ticket-edge:  #e2d2b4;
+  --ticket-ink:   #2a1c0c;
+
+  /* Gate accents -- all drawn from the mango family */
+  --gate-a:       #c05a3a;  /* orange  */
+  --gate-b:       #6b3fa0;  /* purple  */
+  --gate-c:       #2f8f7e;  /* jade    */
+  --gate-d:       #b07a2a;  /* gold    */
+
+  --signal-green: #5aaa6a;
+  --confirm-green:#3a8a4a;
+  --stamp-ink:    #b23320;  /* faded rubber-stamp red */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  min-height: 100vh;
+  overflow: hidden;
+  height: 100vh;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   LOAD SCREEN
+============================================================ */
+#load-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 60%, rgba(107,63,160,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 75% 35%, rgba(192,90,58,0.10) 0%, transparent 60%),
+    var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+#load-screen::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(155,111,168,0.05) 1px, transparent 0);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+/* Vintage box-office sign */
+.load-sign {
+  position: relative;
+  background: linear-gradient(180deg, var(--sign-bg2) 0%, var(--sign-bg) 100%);
+  border-radius: 14px;
+  padding: 16px 30px 20px;
+  margin-bottom: 38px;
+  box-shadow: 0 14px 44px rgba(26,13,46,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.load-sign-bulbs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bulb {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--bulb-on);
+  box-shadow: 0 0 9px var(--bulb-glow);
+  flex-shrink: 0;
+  animation: bulb-chase 1.7s ease-in-out infinite;
+}
+
+/* Opacity-only so the marquee bulbs do not repaint box-shadow every frame */
+@keyframes bulb-chase {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.30; }
+}
+
+.load-sign-placard {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--board-on);
+  text-align: center;
+  text-shadow: 0 0 16px rgba(253,232,192,0.4);
+}
+
+.load-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--text);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.load-title span {
+  background: linear-gradient(135deg, var(--orange-grad-a), var(--purple-lt));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.load-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--muted-lt);
+  margin-bottom: 46px;
+  text-align: center;
+}
+
+.load-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 320px;
+}
+
+.load-label { font-size: 17px; color: var(--text-2); font-weight: 500; text-align: center; }
+
+.load-input {
+  width: 100px;
+  text-align: center;
+  background: white;
+  border: 2px solid var(--border-md);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  padding: 10px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.load-input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px var(--purple-pale); }
+
+.load-btn {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--purple-mid) 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 14px 40px;
+  min-height: 52px;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+  box-shadow: 0 4px 20px rgba(107,63,160,0.30);
+}
+
+.load-btn:hover { opacity: 0.9; box-shadow: 0 6px 24px rgba(107,63,160,0.40); }
+.load-btn:active { transform: scale(0.98); }
+
+/* ============================================================
+   VENUE SCREEN LAYOUT
+============================================================ */
+#venue-screen {
+  display: none;
+  height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg2);
+}
+
+/* ============================================================
+   ZONE 1: BOX-OFFICE SIGN
+============================================================ */
+.boxoffice-sign {
+  background: linear-gradient(180deg, var(--sign-bg2) 0%, var(--sign-bg) 100%);
+  border-bottom: 3px solid rgba(0,0,0,0.55);
+  flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.45);
+  padding: 0 0 4px;
+}
+
+.sign-bulbs {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 22px 4px;
+}
+
+.sign-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 2px 26px 8px;
+}
+
+.sign-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 20px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.sign-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--board-on);
+  text-shadow: 0 0 22px rgba(253,232,192,0.4);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.sign-brand-name span { color: var(--orange-lt); }
+
+.sign-brand-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--board-muted);
+}
+
+.sign-serving {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.sign-serving-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--orange-lt);
+  text-shadow: 0 0 12px rgba(212,115,78,0.5);
+  flex-shrink: 0;
+}
+
+.sign-serving-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--board-on);
+  text-shadow: 0 0 14px rgba(253,232,192,0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sign-house {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--board-muted);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 6px 16px;
+}
+
+.sign-house strong { color: var(--board-on); }
+
+/* ============================================================
+   ZONE 2: THE COUNTER (gate dispensers)
+============================================================ */
+.counter {
+  flex-shrink: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.5), rgba(0,0,0,0.02)),
+    var(--bg3);
+  border-bottom: 1px solid var(--border-md);
+  box-shadow: inset 0 -6px 14px rgba(110,60,20,0.06);
+  padding: 16px 26px 18px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.gate-dispenser {
+  --gc: var(--orange);
+  width: 210px;
+  min-height: 108px;
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(0,0,0,0.12)),
+    var(--gc);
+  border: none;
+  box-shadow: 0 7px 16px rgba(60,30,10,0.22), inset 0 1px 0 rgba(255,255,255,0.38), inset 0 -3px 7px rgba(0,0,0,0.20);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 11px 13px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  text-align: left;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.gate-0 { --gc: var(--gate-a); }
+.gate-1 { --gc: var(--gate-b); }
+.gate-2 { --gc: var(--gate-c); }
+.gate-3 { --gc: var(--gate-d); }
+
+.gate-dispenser:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 24px rgba(60,30,10,0.30), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -3px 7px rgba(0,0,0,0.20);
+}
+.gate-dispenser:active { transform: translateY(0); }
+.gate-dispenser:focus-visible { outline: 3px solid var(--board-on); outline-offset: 2px; }
+
+.gate-dispenser.active-stage {
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.65), 0 0 0 6px rgba(0,0,0,0.10), 0 12px 26px rgba(60,30,10,0.32), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+.gd-plate {
+  background: var(--cream);
+  border-radius: 7px;
+  padding: 7px 11px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.gd-letter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted-lt);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gd-letter::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gc);
+}
+
+.gd-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+/* Dark slot with a peeking ticket */
+.gd-slotwrap {
+  position: relative;
+  height: 22px;
+  margin-top: auto;
+  overflow: hidden;            /* clip the ticket once it passes below the slot */
+}
+
+.gd-peek {
+  position: absolute;
+  left: 10px; right: 10px; top: 0;
+  height: 14px;
+  background: repeating-linear-gradient(90deg, var(--ticket-paper) 0 6px, var(--ticket-edge) 6px 7px);
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 -1px 3px rgba(0,0,0,0.25);
+  z-index: 1;                  /* behind the slot bar */
+  transition: transform 0.15s;
+}
+
+/* The dark slot bar sits in FRONT, so a pulled ticket slides behind it
+   and vanishes, like being inserted into the dispenser. */
+.gd-slot {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 13px;
+  border-radius: 3px;
+  background: #1a1008;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.7);
+  z-index: 2;
+}
+
+.gate-dispenser:hover .gd-peek { transform: translateY(2px); }
+.gate-dispenser.pulling .gd-peek { animation: peek-pull 0.28s ease-in forwards; }
+
+/* Slides straight down behind the slot; no fade -- the slot swallows it */
+@keyframes peek-pull {
+  to { transform: translateY(16px); }
+}
+
+.gd-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.gd-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--board-on);
+  background: rgba(26,16,8,0.55);
+  padding: 3px 9px;
+  border-radius: 11px;
+}
+
+.gd-pull {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Sold-out dispenser */
+.gate-dispenser.sold-out { cursor: default; filter: saturate(0.55) brightness(0.93); }
+.gate-dispenser.sold-out:hover { transform: none; box-shadow: 0 7px 16px rgba(60,30,10,0.22), inset 0 1px 0 rgba(255,255,255,0.38), inset 0 -3px 7px rgba(0,0,0,0.20); }
+.gate-dispenser.sold-out .gd-peek { display: none; }
+
+.gd-soldout {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gd-soldout span {
+  border: 3px double var(--stamp-ink);
+  color: var(--stamp-ink);
+  background: rgba(251,243,228,0.45);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 5px 13px;
+  border-radius: 6px;
+  transform: rotate(-11deg);
+}
+
+/* ============================================================
+   ZONE 3: BOOKING PANEL
+============================================================ */
+.booking-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.booking-header {
+  background: var(--cream-dk);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.booking-stage-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.booking-ticket-badge {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border-md);
+  border-radius: 20px;
+  padding: 5px 16px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.booking-ticket-badge strong { color: var(--orange); margin: 0 2px; }
+
+.booking-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 26px 36px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-body::-webkit-scrollbar { width: 4px; }
+.booking-body::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 2px; }
+
+.booking-idle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--muted-lt);
+  text-align: center;
+  min-height: 200px;
+}
+
+.booking-idle-icon { font-size: 46px; opacity: 0.3; line-height: 1; }
+.booking-idle p { font-size: 18px; color: var(--muted-lt); }
+
+/* ============================================================
+   THE TICKET (ADMIT ONE stub)
+============================================================ */
+.ticket-card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  border-radius: 14px;
+  /* Notches punched at the perforation (x = 196px) using the panel bg color */
+  background:
+    radial-gradient(circle 11px at 196px -2px, var(--bg) 11px, transparent 12px),
+    radial-gradient(circle 11px at 196px calc(100% + 2px), var(--bg) 11px, transparent 12px),
+    linear-gradient(180deg, var(--ticket-paper) 0%, var(--ticket-paper2) 100%);
+  box-shadow:
+    0 8px 26px rgba(110,60,20,0.14),
+    inset 0 0 0 1px var(--ticket-edge),
+    inset 0 0 0 5px var(--ticket-paper),
+    inset 0 0 0 6px rgba(180,140,80,0.20);
+  overflow: hidden;
+  animation: ticket-drop 0.34s cubic-bezier(0.2, 1.1, 0.5, 1);
+}
+
+@keyframes ticket-drop {
+  0%   { opacity: 0; transform: translateY(-16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Left stub */
+.ticket-stub {
+  width: 196px;
+  flex-shrink: 0;
+  border-right: 2px dashed var(--ticket-edge);
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.stub-admit {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gc, var(--orange));
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stub-serial-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted-lt);
+  margin-bottom: 2px;
+}
+
+.stub-serial {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--ticket-ink);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.stub-gate {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  background: var(--gc, var(--orange));
+  border-radius: 5px;
+  padding: 4px 10px;
+  align-self: flex-start;
+}
+
+/* Conductor's hole punch -- punched onto the barcode once admitted, at a
+   different spot per gate (left set inline). Filled with the panel bg +
+   inset shadow so it reads as a real cut-through-the-paper hole. */
+.stub-punch {
+  position: absolute;
+  top: 50%;
+  left: 50%;                       /* overridden per gate via inline style */
+  transform: translate(-50%, -50%) scale(1);
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow:
+    inset 0 2px 3px rgba(0,0,0,0.45),
+    inset 0 -1px 1px rgba(255,255,255,0.55),
+    0 0 0 1px rgba(110,60,20,0.10);
+  animation: punch-pop 0.22s cubic-bezier(0.2, 1.6, 0.5, 1) both;
+}
+
+@keyframes punch-pop {
+  0%   { transform: translate(-50%, -50%) scale(0); }
+  70%  { transform: translate(-50%, -50%) scale(1.25); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.stub-barcode {
+  position: relative;             /* anchors the hole punch */
+  margin-top: auto;
+  height: 30px;
+  background: repeating-linear-gradient(90deg,
+    rgba(42,28,12,0.78) 0 2px, transparent 2px 4px,
+    rgba(42,28,12,0.78) 4px 5px, transparent 5px 8px,
+    rgba(42,28,12,0.78) 8px 11px, transparent 11px 13px);
+  border-radius: 1px;
+}
+
+.stub-fineprint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted-lt);
+  opacity: 0.8;
+}
+
+/* Right main */
+.ticket-main {
+  flex: 1;
+  min-width: 0;
+  padding: 22px 28px 26px;
+  position: relative;
+}
+
+.ticket-microprint {
+  position: absolute;
+  bottom: 6px; left: 0; right: 0;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(110,60,20,0.28);
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Rubber-stamp reveal */
+.stamp {
+  position: absolute;
+  top: 12px; right: 22px;
+  border: 3px double var(--stamp-ink);
+  color: var(--stamp-ink);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 6px 15px;
+  border-radius: 7px;
+  transform: rotate(-13deg);
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 3;
+  animation: stamp-thunk 0.42s cubic-bezier(0.2, 1.5, 0.5, 1) both;
+}
+
+@keyframes stamp-thunk {
+  0%   { opacity: 0;    transform: rotate(-13deg) scale(1.8); }
+  60%  { opacity: 0.85; transform: rotate(-13deg) scale(0.92); }
+  100% { opacity: 0.8;  transform: rotate(-13deg) scale(1); }
+}
+
+/* Question content */
+.q-format-tag {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--border-md);
+  border-radius: 4px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.q-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted-lt);
+  margin-bottom: 8px;
+}
+
+.q-text {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.q-code {
+  background: #1a1008;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 18px 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--board-on);
+  line-height: 1.7;
+  overflow-x: auto;
+  margin-top: 14px;
+  white-space: pre;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+}
+
+.q-code-blank {
+  display: inline-block;
+  min-width: 84px;
+  border-bottom: 2px solid var(--orange-lt);
+  background: rgba(212,115,78,0.10);
+  border-radius: 2px;
+  padding: 0 4px;
+  margin: 0 2px;
+  vertical-align: baseline;
+}
+
+.q-code-blank input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--board-on);
+  width: 100%;
+  min-width: 84px;
+  caret-color: var(--orange-lt);
+}
+
+/* Blank filled in with the answer on reveal */
+.q-code-blank.filled {
+  color: var(--orange-lt);
+  font-weight: 700;
+  text-align: center;
+  background: rgba(212,115,78,0.20);
+}
+
+/* Multiple choice / code trace */
+.mc-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.mc-btn {
+  background: white;
+  border: 2px solid var(--border-md);
+  border-radius: 10px;
+  padding: 14px 18px;
+  min-height: 62px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.45;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.mc-letter {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.mc-btn.revealed-correct { background: #e8f5ea; border-color: var(--signal-green); }
+.mc-btn.revealed-correct .mc-letter { background: var(--signal-green); color: white; }
+.mc-btn.revealed-correct::after {
+  content: ' \2713 correct';
+  font-size: 13px;
+  font-weight: 700;
+  color: #2a6a38;
+  margin-left: auto;
+  align-self: center;
+}
+
+/* Drag and drop */
+.dnd-container { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; margin-top: 14px; }
+.dnd-col-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted-lt); margin-bottom: 8px; }
+.dnd-items, .dnd-targets { display: flex; flex-direction: column; gap: 8px; }
+
+.dnd-draggable {
+  background: var(--surface);
+  border: 2px solid var(--border-md);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: grab;
+  user-select: none;
+  transition: background 0.12s, border-color 0.12s, opacity 0.12s, transform 0.1s;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dnd-draggable:hover { background: var(--bg3); border-color: var(--purple-lt); transform: translateY(-1px); }
+.dnd-draggable.dragging { opacity: 0.4; cursor: grabbing; }
+.dnd-drag-handle { color: var(--muted-lt); flex-shrink: 0; font-size: 13px; }
+
+.dnd-target {
+  background: white;
+  border: 2px dashed var(--border-md);
+  border-radius: 8px;
+  padding: 10px 14px;
+  min-height: 48px;
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.4;
+  transition: border-color 0.12s, background 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dnd-target.drag-over { border-color: var(--purple); background: var(--purple-pale); }
+.dnd-target.matched { border-style: solid; border-color: var(--signal-green); background: #e8f5ea; }
+.dnd-target.reject { border-color: var(--orange); background: var(--orange-pale); animation: dnd-reject 0.36s ease; }
+.dnd-target-label { font-style: italic; color: var(--muted-lt); font-size: 14px; }
+
+@keyframes dnd-reject {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  75%      { transform: translateX(4px); }
+}
+
+.dnd-matched-chip { background: var(--confirm-green); color: white; border-radius: 4px; padding: 2px 8px; font-size: 13px; font-weight: 700; }
+.dnd-check { font-size: 16px; margin-left: auto; flex-shrink: 0; }
+
+/* Reveal + answer + footer */
+.reveal-row { display: flex; gap: 12px; margin-top: 20px; }
+
+.reveal-btn {
+  background: var(--bg3);
+  border: 1.5px solid var(--border-md);
+  border-radius: 10px;
+  color: var(--text-2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 22px;
+  min-height: 48px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reveal-btn:hover { background: var(--surface); border-color: var(--orange-lt); }
+
+.answer-box {
+  background: white;
+  border-left: 4px solid var(--orange-lt);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-top: 20px;
+}
+
+.answer-box strong { color: var(--orange-dk); }
+.answer-box .answer-note { font-size: 16px; color: var(--muted); display: block; margin-top: 6px; }
+
+.continue-hint {
+  margin-top: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted-lt);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.continue-hint::before {
+  content: '\27F2';
+  font-size: 18px;
+  color: var(--orange);
+}
+
+.close-btn {
+  background: linear-gradient(135deg, var(--orange-grad-a), var(--orange-grad-b));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 14px 28px;
+  min-height: 52px;
+  cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 14px rgba(192,90,58,0.28);
+  margin-top: 22px;
+}
+
+.close-btn:hover { opacity: 0.92; box-shadow: 0 5px 18px rgba(192,90,58,0.38); }
+
+/* ============================================================
+   COMPLETION SCREEN
+============================================================ */
+#completion-screen {
+  display: none;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--sign-bg) 0%, var(--purple-deep) 50%, #0d0508 100%);
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.completion-glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(192,90,58,0.14), transparent 70%);
+  pointer-events: none;
+}
+
+.completion-bulbs { display: flex; gap: 11px; margin-bottom: 6px; }
+.completion-bulbs .bulb { width: 12px; height: 12px; }
+
+.completion-stamp {
+  border: 4px double var(--stamp-ink);
+  color: var(--stamp-ink);
+  background: rgba(251,243,228,0.10);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  padding: 10px 26px;
+  border-radius: 10px;
+  transform: rotate(-7deg);
+  margin-bottom: 8px;
+  text-shadow: 0 0 18px rgba(178,51,32,0.3);
+}
+
+.completion-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 46px;
+  font-weight: 900;
+  color: var(--board-on);
+  text-shadow: 0 0 30px rgba(253,232,192,0.3);
+  line-height: 1.1;
+}
+
+.completion-sub { font-size: 18px; color: rgba(253,232,192,0.55); font-style: italic; }
+
+.reopen-btn {
+  background: linear-gradient(135deg, var(--orange-grad-a), var(--orange-grad-b));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 16px 44px;
+  min-height: 56px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: opacity 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 20px rgba(192,90,58,0.30);
+}
+
+.reopen-btn:hover { opacity: 0.9; box-shadow: 0 6px 24px rgba(192,90,58,0.40); }
+
+.hidden { display: none !important; }
+
+/* Reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .bulb, .gate-dispenser.pulling .gd-peek, .ticket-card, .stamp, .stub-punch, .dnd-target.reject { animation: none !important; }
+  .gate-dispenser:hover .gd-peek { transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOAD SCREEN
+============================================================ -->
+<div id="load-screen">
+  <div class="load-sign">
+    <div class="load-sign-bulbs" id="load-bulbs"></div>
+    <div class="load-sign-placard">Box Office &bull; Week 10 Review</div>
+  </div>
+  <h1 class="load-title">Mango<span>Bookings</span></h1>
+  <p class="load-subtitle">Step Right Up. Take a Ticket.</p>
+  <div class="load-form">
+    <label class="load-label" for="guest-count">How many guests tonight?</label>
+    <input class="load-input" type="number" id="guest-count" value="25" min="6" max="30" inputmode="numeric">
+    <button class="load-btn" id="open-doors-btn">Open the Box Office</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     VENUE SCREEN
+============================================================ -->
+<div id="venue-screen">
+
+  <!-- Zone 1: Box-office sign -->
+  <div class="boxoffice-sign">
+    <div class="sign-bulbs" id="sign-bulbs"></div>
+    <div class="sign-row">
+      <div class="sign-brand">
+        <div class="sign-brand-name">Mango<span>Bookings</span></div>
+        <div class="sign-brand-sub">Box Office</div>
+      </div>
+      <div class="sign-serving">
+        <div class="sign-serving-tag" id="serving-tag">BOX OFFICE OPEN</div>
+        <div class="sign-serving-text" id="serving-text">Pull a ticket from any gate to begin</div>
+      </div>
+      <div class="sign-house" id="house-badge">House: <strong>0</strong> seated</div>
+    </div>
+  </div>
+
+  <!-- Zone 2: The counter (gate dispensers) -->
+  <div class="counter">
+    <button class="gate-dispenser gate-0" id="gate-0" data-stage="0" aria-label="Gate A, The Box Office. Pull a ticket.">
+      <div class="gd-plate">
+        <div class="gd-letter">GATE A</div>
+        <div class="gd-name">The Box Office</div>
+      </div>
+      <div class="gd-slotwrap"><div class="gd-peek"></div><div class="gd-slot"></div></div>
+      <div class="gd-foot">
+        <div class="gd-count" id="gd-count-0">7 left</div>
+        <div class="gd-pull">Pull &#10515;</div>
+      </div>
+    </button>
+    <button class="gate-dispenser gate-1" id="gate-1" data-stage="1" aria-label="Gate B, Will Call. Pull a ticket.">
+      <div class="gd-plate">
+        <div class="gd-letter">GATE B</div>
+        <div class="gd-name">Will Call</div>
+      </div>
+      <div class="gd-slotwrap"><div class="gd-peek"></div><div class="gd-slot"></div></div>
+      <div class="gd-foot">
+        <div class="gd-count" id="gd-count-1">7 left</div>
+        <div class="gd-pull">Pull &#10515;</div>
+      </div>
+    </button>
+    <button class="gate-dispenser gate-2" id="gate-2" data-stage="2" aria-label="Gate C, Backstage. Pull a ticket.">
+      <div class="gd-plate">
+        <div class="gd-letter">GATE C</div>
+        <div class="gd-name">Backstage</div>
+      </div>
+      <div class="gd-slotwrap"><div class="gd-peek"></div><div class="gd-slot"></div></div>
+      <div class="gd-foot">
+        <div class="gd-count" id="gd-count-2">7 left</div>
+        <div class="gd-pull">Pull &#10515;</div>
+      </div>
+    </button>
+    <button class="gate-dispenser gate-3" id="gate-3" data-stage="3" aria-label="Gate D, Soundcheck. Pull a ticket.">
+      <div class="gd-plate">
+        <div class="gd-letter">GATE D</div>
+        <div class="gd-name">Soundcheck</div>
+      </div>
+      <div class="gd-slotwrap"><div class="gd-peek"></div><div class="gd-slot"></div></div>
+      <div class="gd-foot">
+        <div class="gd-count" id="gd-count-3">7 left</div>
+        <div class="gd-pull">Pull &#10515;</div>
+      </div>
+    </button>
+  </div>
+
+  <!-- Zone 3: Booking panel -->
+  <div class="booking-panel">
+    <div class="booking-header">
+      <div class="booking-stage-label" id="booking-stage-label">No Ticket Pulled</div>
+      <div class="booking-ticket-badge" id="ticket-badge">Pull a ticket to begin</div>
+    </div>
+    <div class="booking-body" id="booking-body">
+      <div class="booking-idle" id="booking-idle">
+        <div class="booking-idle-icon">&#127915;</div>
+        <p>Pull a ticket from any gate to open the box office</p>
+      </div>
+      <div class="hidden" id="question-panel"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     COMPLETION SCREEN
+============================================================ -->
+<div id="completion-screen">
+  <div class="completion-glow"></div>
+  <div class="completion-bulbs" id="completion-bulbs"></div>
+  <div class="completion-stamp">House Full</div>
+  <div class="completion-title">Every gate sold out.<br>The house is full.</div>
+  <div class="completion-sub">Every ticket pulled. Every guest seated. Great show.</div>
+  <button class="reopen-btn" id="reopen-btn">Reopen the Box Office</button>
+</div>
+
+<script>
+// ============================================================
+// QUESTION DATA -- 4 gates mapping to week 10 skills
+// Formats: recall (no options), fill-in-the-blank, code-trace,
+//          multiple-choice, drag-and-drop
+// ============================================================
+const STAGES = [
+  {
+    id: 0,
+    name: "The Box Office",
+    gate: "GATE A",
+    show: "The Box Office: URLs, DNS &amp; HTTP",
+    questions: [
+      {
+        format: "recall",
+        text: "Before your browser can send a request to mangobookings.com, it has to find the server's real address on the network. What system turns the domain name into an IP address?",
+        answer: "DNS, the Domain Name System.",
+        answerNote: "DNS works like the venue's directory: you know the name (mangobookings.com), DNS looks up the numeric IP address the network actually routes traffic to."
+      },
+      {
+        format: "drag-and-drop",
+        text: "Match each part of this URL to its name:  https://mangobookings.com/shows/42?section=floor",
+        items: [
+          { id: "u-a", label: "https" },
+          { id: "u-b", label: "mangobookings.com" },
+          { id: "u-c", label: "/shows/42" },
+          { id: "u-d", label: "?section=floor" }
+        ],
+        targets: [
+          { id: "ut-a", label: "Host (domain): which server to reach", matchId: "u-b" },
+          { id: "ut-b", label: "Query string: extra parameters after the ?", matchId: "u-d" },
+          { id: "ut-c", label: "Protocol: how to talk to the server", matchId: "u-a" },
+          { id: "ut-d", label: "Path: which resource on that server", matchId: "u-c" }
+        ],
+        answer: "Protocol = https. Host = mangobookings.com. Path = /shows/42. Query string = ?section=floor. The protocol says how, the host says where, the path says what, the query passes extra detail."
+      },
+      {
+        format: "recall",
+        text: "Every HTTP message, request or response, is built from the same pieces. Name the parts of an HTTP request from memory.",
+        answer: "A request line (method + path + version), headers, and an optional body.",
+        answerNote: "Example request line: POST /bookings HTTP/1.1. Headers carry metadata like Content-Type. The body carries the data being sent, for example the JSON for a new booking."
+      },
+      {
+        format: "code-trace",
+        text: "A guest's browser asks for /shows/999 and gets this status line back. What is the server telling the client?",
+        code: "HTTP/1.1 404 Not Found",
+        options: [
+          "The request succeeded and a show was returned",
+          "The show does not exist; this is a client-side (4xx) error",
+          "The server crashed while handling the request",
+          "The guest is not allowed to view that show"
+        ],
+        correctIndex: 1,
+        answer: "404 means the requested resource was not found. The 4xx range signals client errors: the request asked for something that is missing or invalid. (5xx would mean the server itself failed.)"
+      },
+      {
+        format: "drag-and-drop",
+        text: "Match each HTTP status code to what it means.",
+        items: [
+          { id: "s-a", label: "200" },
+          { id: "s-b", label: "201" },
+          { id: "s-c", label: "404" },
+          { id: "s-d", label: "500" }
+        ],
+        targets: [
+          { id: "st-a", label: "Created: a new resource was made", matchId: "s-b" },
+          { id: "st-b", label: "Internal Server Error: the server failed", matchId: "s-d" },
+          { id: "st-c", label: "OK: the request succeeded", matchId: "s-a" },
+          { id: "st-d", label: "Not Found: no such resource", matchId: "s-c" }
+        ],
+        answer: "200 OK = success. 201 Created = a new resource was created (common after a POST). 404 Not Found = the resource does not exist. 500 = the server hit an error handling the request."
+      },
+      {
+        format: "recall",
+        text: "HTTP is often described as stateless. Explain what that means and why it matters for a booking app.",
+        answer: "Each request is independent; the server does not remember previous requests on its own.",
+        answerNote: "Because the server keeps no memory between requests, anything it needs to know (like who you are) must be re-sent every time, usually in a header such as a token. State has to travel with the request."
+      },
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the protocol that encrypts traffic between the browser and the server:",
+        code: "/* ___ */://mangobookings.com/shows",
+        blank: "https",
+        blankPlaceholder: "protocol",
+        answer: "https",
+        answerNote: "https is http layered over TLS encryption, so the request and response cannot be read in transit. Plain http sends everything in the clear."
+      }
+    ]
+  },
+  {
+    id: 1,
+    name: "Will Call",
+    gate: "GATE B",
+    show: "Will Call: REST verbs as booking actions",
+    questions: [
+      {
+        format: "drag-and-drop",
+        text: "Match each HTTP verb to the booking action it performs.",
+        items: [
+          { id: "v-a", label: "GET" },
+          { id: "v-b", label: "POST" },
+          { id: "v-c", label: "PUT" },
+          { id: "v-d", label: "DELETE" }
+        ],
+        targets: [
+          { id: "vt-a", label: "Reserve a brand new booking", matchId: "v-b" },
+          { id: "vt-b", label: "Cancel an existing booking", matchId: "v-d" },
+          { id: "vt-c", label: "Browse the show lineup (read only)", matchId: "v-a" },
+          { id: "vt-d", label: "Replace / update an existing booking", matchId: "v-c" }
+        ],
+        answer: "GET reads (browse shows). POST creates (new booking). PUT replaces/updates (change a booking). DELETE removes (cancel a booking). These four verbs map cleanly onto create, read, update, delete."
+      },
+      {
+        format: "recall",
+        text: "A guest wants to see the full list of shows on the lineup. Which HTTP verb does the app use, and what effect does that verb have on the server's data?",
+        answer: "GET. It is read-only; it retrieves data and does not change anything on the server.",
+        answerNote: "GET is a safe verb: calling it any number of times leaves the server's data untouched. You can refresh the lineup as often as you like without booking anything."
+      },
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the verb that reserves a new seat by sending booking data to the server:",
+        code: "/* ___ */ /bookings\nContent-Type: application/json\n\n{ \"showId\": 42, \"seat\": \"A12\" }",
+        blank: "POST",
+        blankPlaceholder: "verb",
+        answer: "POST",
+        answerNote: "POST sends a body of new data to create a resource. A successful create usually comes back as 201 Created with the new booking in the response."
+      },
+      {
+        format: "multiple-choice",
+        text: "A guest already has a booking and wants to change the seat on it. What is the difference between PUT and POST here?",
+        options: [
+          "PUT and POST are identical; either one always works the same way",
+          "PUT updates an existing booking; POST creates a brand new one",
+          "PUT is read-only; POST is the only one that changes data",
+          "PUT creates a new booking; POST can only delete one"
+        ],
+        correctIndex: 1,
+        answer: "POST creates a brand new resource, so it makes a new booking each time you call it. PUT updates (replaces) an existing resource at a known id, so it changes the booking already there. To change the seat on an existing booking you want PUT, not POST."
+      },
+      {
+        format: "recall",
+        text: "Idempotent means repeating the same request gives the same end state. Two important properties of HTTP verbs are safe and idempotent. Which verbs are safe, and which are idempotent?",
+        answer: "GET is safe (no change). GET, PUT, and DELETE are idempotent; POST is not.",
+        answerNote: "Idempotent means repeating the same request gives the same end state. DELETE /bookings/7 twice still leaves booking 7 gone. But POST /bookings twice creates two bookings, so POST is not idempotent."
+      },
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the verb that cancels booking number 7:",
+        code: "/* ___ */ /bookings/7",
+        blank: "DELETE",
+        blankPlaceholder: "verb",
+        answer: "DELETE",
+        answerNote: "DELETE removes the resource identified by the URL. The id in the path (/bookings/7) tells the server exactly which booking to cancel."
+      },
+      {
+        format: "code-trace",
+        text: "A guest sends this request and gets a 201 Created back. What happened?",
+        code: "POST /bookings\nContent-Type: application/json\n\n{ \"showId\": 7, \"seat\": \"B4\" }",
+        options: [
+          "The server returned a list of all existing bookings",
+          "An existing booking was deleted",
+          "A new booking was created for show 7, seat B4",
+          "The request failed because POST needs an id in the URL"
+        ],
+        correctIndex: 2,
+        answer: "POST /bookings with a body creates a new booking. The 201 Created status confirms a new resource was made. Note there is no id in the URL because the server assigns the new booking's id."
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "Backstage",
+    gate: "GATE C",
+    show: "Backstage: Controller, Service &amp; Model layers",
+    questions: [
+      {
+        format: "drag-and-drop",
+        text: "Match each layer of the app to the job it does.",
+        items: [
+          { id: "l-a", label: "Controller" },
+          { id: "l-b", label: "Service" },
+          { id: "l-c", label: "Model (Entity)" },
+          { id: "l-d", label: "Repository" }
+        ],
+        targets: [
+          { id: "lt-a", label: "Holds business logic: checks availability, applies rules", matchId: "l-b" },
+          { id: "lt-b", label: "Talks to the database to load and save rows", matchId: "l-d" },
+          { id: "lt-c", label: "Receives the HTTP request and returns a response", matchId: "l-a" },
+          { id: "lt-d", label: "Represents the data: a Booking, a Show", matchId: "l-c" }
+        ],
+        answer: "Controller handles the HTTP layer. Service holds the business logic. Model/Entity is the data shape. Repository is the database access. Each layer has one clear responsibility."
+      },
+      {
+        format: "recall",
+        text: "A POST /bookings request arrives at your Spring Boot app. Which layer receives it first, and what is that layer's job?",
+        answer: "The controller. It maps the HTTP request to a method, pulls out the inputs, delegates to the service, and returns a response.",
+        answerNote: "The controller is the box-office window: it takes the request and hands back a response. It should stay thin and not contain the real booking logic itself."
+      },
+      {
+        format: "recall",
+        text: "Why do we put business logic in a service layer instead of writing it all inside the controller?",
+        answer: "Separation of concerns: thin controllers, reusable and testable logic.",
+        answerNote: "Keeping logic in the service means it can be reused by more than one controller, tested without HTTP, and changed without touching request handling. The controller just coordinates."
+      },
+      {
+        format: "code-trace",
+        text: "Trace this controller method. When a booking request comes in, what does this code actually do?",
+        code: "@PostMapping(\"/bookings\")\npublic Booking create(@RequestBody Booking b) {\n    return bookingService.book(b);\n}",
+        options: [
+          "It writes the booking directly to the database itself",
+          "It receives the booking, hands it to the service, and returns the result",
+          "It deletes the booking with the given id",
+          "It returns every booking in the system"
+        ],
+        correctIndex: 1,
+        answer: "The controller takes the booking from the request body, delegates the real work to bookingService.book(b), and returns whatever the service gives back. The controller coordinates; the service does the logic."
+      },
+      {
+        format: "recall",
+        text: "What is a Model in a Spring app? Describe what the Booking model would look like (what fields it might hold).",
+        answer: "A Model is a plain class that describes the shape of one kind of data. A Booking model would be a class holding fields like id, showId, seat, and guestName.",
+        answerNote: "The Model is just the data definition; it has no logic. With JPA the class maps to a table and one Booking object maps to one row, so saving a Booking writes a row to the bookings table."
+      },
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the Spring annotation that marks this booking's primary key:",
+        code: "@Entity\npublic class Booking {\n    @/* ___ */\n    private Long id;\n    private String guestName;\n    private String seat;\n}",
+        blank: "Id",
+        blankPlaceholder: "annotation",
+        answer: "Id",
+        answerNote: "@Id tells JPA which field is the primary key, the value that uniquely identifies one row. It usually pairs with @GeneratedValue so the database fills in the id automatically."
+      },
+      {
+        format: "recall",
+        text: "Trace the path a POST /bookings request travels through the app, in order, from the outside world to the database.",
+        answer: "Client to Controller to Service to Repository to Database (and the response travels back the same way).",
+        answerNote: "Request comes in to the controller, which calls the service for the logic, which calls the repository to save, which hits the database. Each layer only talks to the one next to it."
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "Soundcheck",
+    gate: "GATE D",
+    show: "Soundcheck: Spring Boot, JPA &amp; annotations",
+    questions: [
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the annotation that marks this class as a REST controller so Spring routes web requests to it:",
+        code: "@/* ___ */\npublic class BookingController {\n    // handler methods\n}",
+        blank: "RestController",
+        blankPlaceholder: "annotation",
+        answer: "RestController",
+        answerNote: "@RestController tells Spring this class handles web requests and that method return values are written straight to the response body (as JSON), not treated as view names."
+      },
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the annotation that maps this method to GET /shows:",
+        code: "@/* ___ */(\"/shows\")\npublic List<Show> all() {\n    return showService.findAll();\n}",
+        blank: "GetMapping",
+        blankPlaceholder: "annotation",
+        answer: "GetMapping",
+        answerNote: "@GetMapping(\"/shows\") maps HTTP GET requests for /shows to this method. There are matching annotations for the other verbs: @PostMapping, @PutMapping, @DeleteMapping."
+      },
+      {
+        format: "drag-and-drop",
+        text: "Match each Spring / JPA annotation to what it does.",
+        items: [
+          { id: "a-a", label: "@Entity" },
+          { id: "a-b", label: "@Id" },
+          { id: "a-c", label: "@RestController" },
+          { id: "a-d", label: "@Autowired" }
+        ],
+        targets: [
+          { id: "at-a", label: "Marks the primary key field", matchId: "a-b" },
+          { id: "at-b", label: "Injects a dependency (like a service)", matchId: "a-d" },
+          { id: "at-c", label: "Maps the class to a database table", matchId: "a-a" },
+          { id: "at-d", label: "Handles REST requests and returns data", matchId: "a-c" }
+        ],
+        answer: "@Entity maps a class to a table. @Id marks the primary key. @RestController handles web requests and returns data. @Autowired injects a dependency so you do not construct it by hand."
+      },
+      {
+        format: "recall",
+        text: "What does the @Entity annotation do, and what must every @Entity class have?",
+        answer: "@Entity maps the class to a database table; every entity must have an @Id (a primary key field).",
+        answerNote: "JPA uses @Entity to treat the class as persistent data, so each object becomes a row. The @Id field uniquely identifies each row, like the booking's id."
+      },
+      {
+        format: "fill-in-the-blank",
+        text: "Fill in the annotation that captures the {id} from the URL path into the method parameter:",
+        code: "@GetMapping(\"/shows/{id}\")\npublic Show one(@/* ___ */ Long id) {\n    return showService.findById(id);\n}",
+        blank: "PathVariable",
+        blankPlaceholder: "annotation",
+        answer: "PathVariable",
+        answerNote: "@PathVariable binds the {id} placeholder in the URL to the method parameter. So a request to /shows/42 calls the method with id = 42."
+      },
+      {
+        format: "code-trace",
+        text: "Your repository is just this interface, with no method bodies written. What do you get from it?",
+        code: "public interface BookingRepository\n        extends JpaRepository<Booking, Long> {\n}",
+        options: [
+          "Nothing; an empty interface cannot do anything",
+          "Built-in CRUD methods like save, findById, findAll, deleteById",
+          "Only a findAll method, and you must write the rest",
+          "A new database table, but no methods to use it"
+        ],
+        correctIndex: 1,
+        answer: "Extending JpaRepository gives you ready-made CRUD methods (save, findById, findAll, deleteById, and more) without writing any SQL or implementation. Spring Data provides the implementation at runtime."
+      },
+      {
+        format: "recall",
+        text: "In a POST handler, what does @RequestBody do?",
+        answer: "It binds the JSON body of the request to a Java object (deserializes the body into a parameter).",
+        answerNote: "When a guest POSTs booking JSON, @RequestBody Booking b converts that JSON into a Booking object so your method can work with it as normal Java, no manual parsing needed."
+      }
+    ]
+  }
+];
+
+const GATE_LETTERS = ['A', 'B', 'C', 'D'];
+const PUNCH_X = ['26%', '48%', '70%', '88%']; // hole-punch spot on the barcode, per gate
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ============================================================
+// STATE
+// ============================================================
+let state = { guestCount: 25, activeStage: null, stageState: [] };
+let isPulling = false;
+
+function fisherYates(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initSession(n) {
+  state.guestCount = n;
+  state.activeStage = null;
+
+  // Total tickets: enough for every guest to be called at least once.
+  // Floor of 12 (3 per gate) so small cohorts still get a full review.
+  const totalNeeded = Math.max(12, n);
+  const stageCount = STAGES.length;
+  const basePerStage = Math.floor(totalNeeded / stageCount);
+  let remainder = totalNeeded - basePerStage * stageCount;
+
+  const allGuests = fisherYates(Array.from({ length: n }, (_, i) => i + 1));
+  let cursor = 0;
+
+  state.stageState = STAGES.map((stage) => {
+    let qps = basePerStage + (remainder > 0 ? 1 : 0);
+    if (remainder > 0) remainder--;
+    const questionCount = Math.min(qps, stage.questions.length);
+    const slots = [];
+    for (let q = 0; q < questionCount; q++) {
+      slots.push(allGuests[cursor % allGuests.length]);
+      cursor++;
+    }
+    return { ticketSlots: slots, dispensed: 0, idx: -1, revealed: false, dndState: null };
+  });
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function spacer(h) { const d = document.createElement('div'); d.style.height = h + 'px'; return d; }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+function gateColorVar(si) { return ['var(--gate-a)', 'var(--gate-b)', 'var(--gate-c)', 'var(--gate-d)'][si]; }
+function remaining(ss) { return ss.ticketSlots.length - ss.dispensed; }
+function allSoldOut() { return state.stageState.every(s => remaining(s) === 0); }
+function servedTotal() { return state.stageState.reduce((sum, s) => sum + s.dispensed, 0); }
+function totalTickets() { return state.stageState.reduce((sum, s) => sum + s.ticketSlots.length, 0); }
+
+function formatLabel(fmt) {
+  if (fmt === 'recall') return 'Short Answer';
+  if (fmt === 'fill-in-the-blank') return 'Fill in the Blank';
+  if (fmt === 'code-trace') return 'Code Trace';
+  if (fmt === 'multiple-choice') return 'Multiple Choice';
+  if (fmt === 'drag-and-drop') return 'Drag and Drop';
+  return fmt;
+}
+
+const EYE_SVG = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+
+// ============================================================
+// BUILD BULBS
+// ============================================================
+function buildBulbs(el, count) {
+  el.innerHTML = '';
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('div');
+    b.className = 'bulb';
+    b.style.animationDelay = (i * 0.12).toFixed(2) + 's';
+    el.appendChild(b);
+  }
+}
+
+// ============================================================
+// RENDER GATE DISPENSERS
+// ============================================================
+function renderDispensers() {
+  STAGES.forEach((stage, si) => {
+    const disp = document.getElementById('gate-' + si);
+    const countEl = document.getElementById('gd-count-' + si);
+    const ss = state.stageState[si];
+    const left = remaining(ss);
+    const soldOut = left === 0;
+
+    disp.classList.toggle('active-stage', state.activeStage === si);
+    disp.classList.toggle('sold-out', soldOut);
+    disp.setAttribute('aria-disabled', soldOut ? 'true' : 'false');
+
+    if (countEl) countEl.textContent = soldOut ? 'sold out' : (left + ' left');
+
+    // Sold-out stamp overlay (added once)
+    if (soldOut && !disp.querySelector('.gd-soldout')) {
+      const stamp = document.createElement('div');
+      stamp.className = 'gd-soldout';
+      stamp.innerHTML = '<span>Sold Out</span>';
+      disp.appendChild(stamp);
+    } else if (!soldOut) {
+      const existing = disp.querySelector('.gd-soldout');
+      if (existing) existing.remove();
+    }
+  });
+}
+
+// ============================================================
+// UPDATE THE BOX-OFFICE SIGN
+// ============================================================
+function updateSign() {
+  const tag = document.getElementById('serving-tag');
+  const text = document.getElementById('serving-text');
+  const house = document.getElementById('house-badge');
+
+  house.innerHTML = 'House: <strong>' + servedTotal() + '</strong> of ' + totalTickets() + ' seated';
+
+  if (state.activeStage === null) {
+    tag.textContent = 'BOX OFFICE OPEN';
+    text.innerHTML = 'Pull a ticket from any gate to begin';
+    return;
+  }
+
+  const si = state.activeStage;
+  const stage = STAGES[si];
+  const ss = state.stageState[si];
+  const guestNum = ss.ticketSlots[ss.idx];
+  const serial = GATE_LETTERS[si] + '·' + String(guestNum).padStart(3, '0');
+  tag.textContent = 'NOW SERVING';
+  text.innerHTML = 'No. ' + serial + ' &nbsp;·&nbsp; ' + stage.show;
+}
+
+// ============================================================
+// PULL A TICKET FROM A GATE
+// ============================================================
+function pullGate(si) {
+  if (isPulling) return;
+  const ss = state.stageState[si];
+  if (remaining(ss) === 0) return;
+
+  isPulling = true;
+  const disp = document.getElementById('gate-' + si);
+  disp.classList.add('pulling');
+
+  ss.idx = ss.dispensed;
+  ss.dispensed++;
+  ss.revealed = false;
+  ss.dndState = null;
+  state.activeStage = si;
+
+  const delay = prefersReduced ? 0 : 300;
+  setTimeout(() => {
+    disp.classList.remove('pulling');
+    isPulling = false;
+    renderDispensers();
+    updateSign();
+    renderQuestion();
+  }, delay);
+}
+
+// ============================================================
+// RENDER QUESTION (on a ticket stub)
+// ============================================================
+function renderQuestion() {
+  const idle = document.getElementById('booking-idle');
+  const panel = document.getElementById('question-panel');
+  const stageLabel = document.getElementById('booking-stage-label');
+  const ticketBadge = document.getElementById('ticket-badge');
+
+  if (state.activeStage === null) {
+    idle.classList.remove('hidden');
+    panel.classList.add('hidden');
+    stageLabel.textContent = 'No Ticket Pulled';
+    ticketBadge.textContent = 'Pull a ticket to begin';
+    return;
+  }
+
+  const si = state.activeStage;
+  const stage = STAGES[si];
+  const ss = state.stageState[si];
+  const qi = ss.idx;
+  const q = stage.questions[qi];
+  const guestNum = ss.ticketSlots[qi];
+  const serial = GATE_LETTERS[si] + '·' + String(guestNum).padStart(3, '0');
+
+  stageLabel.textContent = stage.gate + ' · ' + stage.name;
+  ticketBadge.innerHTML = 'Ticket <strong>' + servedTotal() + '</strong> of ' + totalTickets();
+
+  idle.classList.add('hidden');
+  panel.classList.remove('hidden');
+  panel.innerHTML = '';
+
+  // Ticket card
+  const card = document.createElement('div');
+  card.className = 'ticket-card';
+  card.style.setProperty('--gc', gateColorVar(si));
+
+  // Left stub
+  const stub = document.createElement('div');
+  stub.className = 'ticket-stub';
+  stub.innerHTML =
+    '<div class="stub-admit">✦ Admit One</div>' +
+    '<div><div class="stub-serial-label">Ticket No.</div><div class="stub-serial">' + esc(serial) + '</div></div>' +
+    '<div class="stub-gate">' + esc(stage.gate) + '</div>' +
+    '<div class="stub-barcode">' +
+      (ss.revealed ? '<div class="stub-punch" style="left:' + PUNCH_X[si] + '" aria-hidden="true"></div>' : '') +
+    '</div>' +
+    '<div class="stub-fineprint">MangoBookings · No Refunds</div>';
+  card.appendChild(stub);
+
+  // Right main
+  const main = document.createElement('div');
+  main.className = 'ticket-main';
+
+  const formatTag = document.createElement('div');
+  formatTag.className = 'q-format-tag';
+  formatTag.textContent = formatLabel(q.format);
+  main.appendChild(formatTag);
+
+  const qLabel = document.createElement('div');
+  qLabel.className = 'q-label';
+  qLabel.textContent = 'Gate ' + GATE_LETTERS[si] + ' · Ticket ' + (ss.dispensed) + ' of ' + ss.ticketSlots.length;
+  main.appendChild(qLabel);
+
+  const qText = document.createElement('div');
+  qText.className = 'q-text';
+  qText.textContent = q.text;
+  main.appendChild(qText);
+
+  if (q.format === 'fill-in-the-blank') {
+    renderFITB(main, q, ss);
+  } else if (q.format === 'recall') {
+    renderRecall(main, q, ss);
+  } else if (q.format === 'code-trace' || q.format === 'multiple-choice') {
+    renderMC(main, q, ss);
+  } else if (q.format === 'drag-and-drop') {
+    renderDnD(main, q, ss);
+  }
+
+  // Microprint footer
+  const micro = document.createElement('div');
+  micro.className = 'ticket-microprint';
+  micro.textContent = 'MANGOBOOKINGS BOX OFFICE · ADMIT ONE · ' + serial + ' · VALID TONIGHT ONLY · MANGOBOOKINGS BOX OFFICE · ADMIT ONE';
+  main.appendChild(micro);
+
+  // Rubber stamp on reveal
+  if (ss.revealed) {
+    const stamp = document.createElement('div');
+    stamp.className = 'stamp';
+    stamp.textContent = 'Admitted';
+    card.appendChild(stamp);
+  }
+
+  card.appendChild(main);
+  panel.appendChild(card);
+
+  // Footer: continue hint or close-the-night button
+  if (ss.revealed || allSoldOut()) {
+    const footer = document.createElement('div');
+    if (allSoldOut()) {
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'close-btn';
+      closeBtn.innerHTML = 'Close the Box Office <span style="font-size:18px">&#9679;</span>';
+      closeBtn.addEventListener('click', showCompletion);
+      footer.appendChild(closeBtn);
+    } else if (ss.revealed) {
+      const hint = document.createElement('div');
+      hint.className = 'continue-hint';
+      hint.textContent = 'Pull the next ticket from any gate to continue.';
+      footer.appendChild(hint);
+    }
+    panel.appendChild(footer);
+  }
+}
+
+// ============================================================
+// SHORT ANSWER (question + reveal; no on-screen options)
+// ============================================================
+function renderRecall(main, q, ss) {
+  if (q.code) {
+    const codeBlock = document.createElement('pre');
+    codeBlock.className = 'q-code';
+    codeBlock.textContent = q.code;
+    main.appendChild(codeBlock);
+  }
+
+  if (!ss.revealed) appendRevealBtn(main, ss);
+  else appendAnswerBox(main, q);
+}
+
+// ============================================================
+// FILL IN THE BLANK
+// ============================================================
+function renderFITB(main, q, ss) {
+  const codeWrap = document.createElement('div');
+  codeWrap.className = 'q-code';
+  const blankFill = ss.revealed
+    ? '<span class="q-code-blank filled">' + esc(q.answer) + '</span>'
+    : '<span class="q-code-blank"><input type="text" placeholder="' + esc(q.blankPlaceholder) + '" id="fitb-input" autocomplete="off" spellcheck="false" aria-label="Fill in the blank"></span>';
+  const codeText = esc(q.code).replace('/* ___ */', blankFill);
+  codeWrap.innerHTML = codeText;
+  main.appendChild(codeWrap);
+
+  if (!ss.revealed) appendRevealBtn(main, ss);
+  else appendAnswerBox(main, q);
+}
+
+// ============================================================
+// MULTIPLE CHOICE / CODE TRACE
+// ============================================================
+function renderMC(main, q, ss) {
+  if (q.code) {
+    const codeBlock = document.createElement('pre');
+    codeBlock.className = 'q-code';
+    codeBlock.textContent = q.code;
+    main.appendChild(codeBlock);
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'mc-options';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, oi) => {
+    const btn = document.createElement('div');
+    btn.className = 'mc-btn' + (ss.revealed && oi === q.correctIndex ? ' revealed-correct' : '');
+    btn.innerHTML = '<span class="mc-letter">' + letters[oi] + '</span><span>' + esc(opt) + '</span>';
+    grid.appendChild(btn);
+  });
+  main.appendChild(grid);
+
+  if (!ss.revealed) appendRevealBtn(main, ss);
+  else appendAnswerBox(main, q);
+}
+
+// ============================================================
+// DRAG AND DROP
+// ============================================================
+function renderDnD(main, q, ss) {
+  if (!ss.dndState) ss.dndState = { matches: {}, dragItem: null };
+  const dndState = ss.dndState;
+
+  const container = document.createElement('div');
+  container.className = 'dnd-container';
+
+  const leftCol = document.createElement('div');
+  const leftLabel = document.createElement('div');
+  leftLabel.className = 'dnd-col-label';
+  leftLabel.textContent = 'Items';
+  leftCol.appendChild(leftLabel);
+
+  const itemsDiv = document.createElement('div');
+  itemsDiv.className = 'dnd-items';
+  const matchedItemIds = new Set(Object.values(dndState.matches));
+  q.items.forEach(item => {
+    if (matchedItemIds.has(item.id)) return;
+    const drag = document.createElement('div');
+    drag.className = 'dnd-draggable';
+    drag.draggable = true;
+    drag.dataset.itemId = item.id;
+    drag.innerHTML = '<span class="dnd-drag-handle">&#8801;</span><span>' + esc(item.label) + '</span>';
+    drag.addEventListener('dragstart', e => {
+      dndState.dragItem = item.id;
+      drag.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    drag.addEventListener('dragend', () => drag.classList.remove('dragging'));
+    itemsDiv.appendChild(drag);
+  });
+  leftCol.appendChild(itemsDiv);
+
+  const rightCol = document.createElement('div');
+  const rightLabel = document.createElement('div');
+  rightLabel.className = 'dnd-col-label';
+  rightLabel.textContent = 'Match To';
+  rightCol.appendChild(rightLabel);
+
+  const targetsDiv = document.createElement('div');
+  targetsDiv.className = 'dnd-targets';
+  q.targets.forEach(target => {
+    const tgt = document.createElement('div');
+    tgt.className = 'dnd-target';
+    tgt.dataset.targetId = target.id;
+    const matchedItemId = dndState.matches[target.id];
+
+    if (matchedItemId) {
+      tgt.classList.add('matched');
+      const matchedItem = q.items.find(i => i.id === matchedItemId);
+      const correct = matchedItemId === target.matchId;
+      tgt.innerHTML =
+        '<span class="dnd-matched-chip">' + esc(matchedItem ? matchedItem.label : '') + '</span>' +
+        '<span style="font-size:14px;color:var(--text-2);flex:1">' + esc(target.label) + '</span>' +
+        '<span class="dnd-check" style="color:' + (correct ? 'var(--signal-green)' : 'var(--orange)') + '">' + (correct ? '&#10003;' : '&#215;') + '</span>';
+    } else {
+      tgt.innerHTML = '<span class="dnd-target-label">' + esc(target.label) + '</span>';
+      tgt.addEventListener('dragover', e => { e.preventDefault(); tgt.classList.add('drag-over'); });
+      tgt.addEventListener('dragleave', () => tgt.classList.remove('drag-over'));
+      tgt.addEventListener('drop', e => {
+        e.preventDefault();
+        tgt.classList.remove('drag-over');
+        const dragged = dndState.dragItem;
+        dndState.dragItem = null;
+        if (!dragged) return;
+        if (dragged === target.matchId) {
+          // Correct match only -- accept and lock it in
+          dndState.matches[target.id] = dragged;
+          renderQuestion();
+        } else {
+          // Wrong match -- reject; the item stays in the pool
+          tgt.classList.add('reject');
+          setTimeout(() => tgt.classList.remove('reject'), 360);
+        }
+      });
+    }
+    targetsDiv.appendChild(tgt);
+  });
+  rightCol.appendChild(targetsDiv);
+
+  container.appendChild(leftCol);
+  container.appendChild(rightCol);
+  main.appendChild(container);
+
+  if (!ss.revealed) {
+    appendRevealBtn(main, ss, () => {
+      q.targets.forEach(t => { if (!dndState.matches[t.id]) dndState.matches[t.id] = t.matchId; });
+    });
+  } else {
+    appendAnswerBox(main, q);
+  }
+}
+
+// ============================================================
+// SHARED: REVEAL BUTTON, ANSWER BOX
+// ============================================================
+function appendRevealBtn(main, ss, beforeReveal) {
+  const row = document.createElement('div');
+  row.className = 'reveal-row';
+  const btn = document.createElement('button');
+  btn.className = 'reveal-btn';
+  btn.innerHTML = EYE_SVG + ' Reveal Answer';
+  btn.addEventListener('click', () => {
+    if (beforeReveal) beforeReveal();
+    ss.revealed = true;
+    renderDispensers();
+    updateSign();
+    renderQuestion();
+  });
+  row.appendChild(btn);
+  main.appendChild(row);
+}
+
+function appendAnswerBox(main, q) {
+  const aBox = document.createElement('div');
+  aBox.className = 'answer-box';
+  let html = '<strong>Answer: ' + esc(q.answer) + '</strong>';
+  if (q.answerNote) html += '<span class="answer-note">' + esc(q.answerNote) + '</span>';
+  aBox.innerHTML = html;
+  main.appendChild(aBox);
+}
+
+// ============================================================
+// COMPLETION
+// ============================================================
+function showCompletion() {
+  buildBulbs(document.getElementById('completion-bulbs'), 9);
+  document.getElementById('completion-screen').style.display = 'flex';
+}
+
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+document.getElementById('guest-count').addEventListener('blur', function () {
+  let v = parseInt(this.value, 10);
+  if (isNaN(v) || v < 6) v = 6;
+  if (v > 30) v = 30;
+  this.value = v;
+});
+
+document.getElementById('open-doors-btn').addEventListener('click', () => {
+  const n = parseInt(document.getElementById('guest-count').value, 10) || 25;
+  initSession(n);
+
+  buildBulbs(document.getElementById('sign-bulbs'), 24);
+
+  document.getElementById('load-screen').style.display = 'none';
+  document.getElementById('venue-screen').style.display = 'flex';
+
+  renderDispensers();
+  updateSign();
+  renderQuestion();
+});
+
+STAGES.forEach((_, si) => {
+  document.getElementById('gate-' + si).addEventListener('click', () => {
+    if (remaining(state.stageState[si]) === 0) return;
+    pullGate(si);
+  });
+});
+
+document.getElementById('reopen-btn').addEventListener('click', () => {
+  document.getElementById('completion-screen').style.display = 'none';
+  document.getElementById('venue-screen').style.display = 'none';
+  document.getElementById('load-screen').style.display = 'flex';
+  document.getElementById('booking-idle').innerHTML =
+    '<div class="booking-idle-icon">&#127915;</div>' +
+    '<p>Pull a ticket from any gate to open the box office</p>';
+});
+
+// Build the load-screen sign bulbs on first paint
+buildBulbs(document.getElementById('load-bulbs'), 13);
+</script>
+</body>
+</html>

@@ -159,7 +159,8 @@ async function createCandidate(event) {
     const candidate = {
         name: formData.get('name'),
         email: formData.get('email'),
-        fieldOfStudy: formData.get('fieldOfStudy')
+        fieldOfStudy: formData.get('fieldOfStudy'),
+        registeredAt: formData.get('registeredAt')
     };
 
     try {
@@ -240,18 +241,24 @@ function renderCandidates() {
         return;
     }
     
-    list.innerHTML = candidates.map(candidate => `
+    list.innerHTML = candidates.map(candidate => {
+        if (candidate.visible) {
+            return `
         <div class="candidate-card">
             <div class="candidate-info">
                 <h4>${escapeHtml(candidate.name)}</h4>
                 <div class="candidate-email">📧 ${escapeHtml(candidate.email)}</div>
                 <div class="candidate-field">🎓 ${escapeHtml(candidate.fieldOfStudy)}</div>
+                <div class="candidate-registeredAt">Registered On: ${escapeHtml(new Date(candidate.registeredAt).toLocaleString())}</div>
             </div>
             <button class="btn btn-delete" onclick="deleteCandidate(${candidate.id})">
                 🗑️
             </button>
         </div>
-    `).join('');
+    `
+        }
+
+        } ).join('');
 }
 
 // ============================================

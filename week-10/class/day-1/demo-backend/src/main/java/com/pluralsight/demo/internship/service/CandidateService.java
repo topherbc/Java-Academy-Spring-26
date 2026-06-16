@@ -2,14 +2,20 @@ package com.pluralsight.demo.internship.service;
 
 import com.pluralsight.demo.internship.model.Candidate;
 import com.pluralsight.demo.internship.repository.CandidateRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CandidateService {
 
     private final CandidateRepository candidateRepository;
+
+    @Value("${candidates.visible-by-default}")
+    private boolean visibleByDefault;
 
     public CandidateService(CandidateRepository candidateRepository) {
         this.candidateRepository = candidateRepository;
@@ -25,7 +31,21 @@ public class CandidateService {
                 .orElseThrow(() -> new RuntimeException("Candidate not found with id: " + id));
     }
 
+    public List<Candidate> searchByName(String name) {
+        return candidateRepository.findAll().stream()
+                .filter(c -> (c.getName() != null) && (c.getName().contains(name)))
+                .collect(Collectors.toList());
+    }
+
+    public List<Candidate> getCandidatesByFieldOfStudy(String fieldOfStudy) {
+    return candidateRepository.findAll().stream()
+                .filter(c -> c.getFieldOfStudy().equalsIgnoreCase(fieldOfStudy))
+                .collect(Collectors.toList());
+    }
+
     public Candidate createCandidate(Candidate candidate) {
+        candidate.setRegisteredAt(LocalDateTime.now());
+        candidate.setVisible(visibleByDefault);
         return candidateRepository.save(candidate);
     }
 
